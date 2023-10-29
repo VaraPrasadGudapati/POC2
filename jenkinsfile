@@ -26,30 +26,5 @@ agent any
             }
         }
         
-        stage('Docker image') {
-            steps {
-                script {
-                sh 'docker build -t mounika420/dockerfile-gen .'
-                }
-              }
-        }
-        stage('Dockerhub login in' ) {
-            steps {
-                script {
-                  withCredentials([string(credentialsId: 'MounikaDockerhubpwd1', variable: 'MonikaDockerHub')]) {
-                      sh 'docker login -u mounika420 -p ${MonikaDockerHub}'    
-                }
-                                   
-                }
-              }
-        }
-        stage ('Docker push') {
-            steps {
-                sh 'docker push mounika420/dockerfile-gen'    
-            }
-            
-        }
-     
-        
     }
 }
