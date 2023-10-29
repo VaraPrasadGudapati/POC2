@@ -1,39 +1,31 @@
 pipeline {
     environment {
-        access_key     = credentials('access_key')
-        secret_key = credentials('secret_key')
+       AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
+       AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
     }
-    agent any
-    tools {
-        maven 'Maven'
-        
-    }
-
-    stages {
+agent any
+      stages {
         stage('Checkout Git') {
             steps {
-               git branch: 'main', url: 'main.tf'
+               git branch: 'main', url: 'https://github.com/Mounika420/POC2.git'
         }
+        }
+        stage('Terraform init') {
+            steps {
+                sh 'terraform init'
+            }
+        }
+   stage('Terraform plan') {
+            steps {
+                sh 'terraform plan'
+            }
+        }
+        stage('Terraform apply') {
+            steps {
+                sh 'terraform apply --auto-approve'
+            }
         }
         
-        stage('Maven clean') {
-            steps {
-              
-              sh 'mvn clean '
-            }
-        }
-        stage('Maven test') {
-            steps {
-              
-              sh 'mvn test '
-            }
-        }
-        stage('Maven package') {
-            steps {
-              
-              sh 'mvn package'
-            }
-        }
         stage('Docker image') {
             steps {
                 script {
