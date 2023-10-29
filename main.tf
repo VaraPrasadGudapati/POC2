@@ -10,13 +10,13 @@ resource "aws_instance" "multiple_applications" {
     tags = {
         Name="MultipleAppIns"
     }
-    key_name = "Multiple-keypair"
+    key_name = "keypair"
 
     connection {
     type = "ssh"
     host = self.public_ip
     user = "ubuntu"
-    private_key = file("Multiple-keypair")    
+    private_key = file("keypair")    
  }
  provisioner "remote-exec" {
   inline = [
@@ -35,7 +35,7 @@ resource "aws_instance" "multiple_applications" {
 
 #Create the keypair the  of applications
 resource "aws_key_pair" "tf-key-pair" {
-key_name = "Multiple-keypair"
+key_name = "keypair"
 public_key = tls_private_key.rsa.public_key_openssh
 }
 resource "tls_private_key" "rsa" {
@@ -44,7 +44,7 @@ rsa_bits  = 4096
 }
 resource "local_file" "tf-key" {
 content  = tls_private_key.rsa.private_key_pem
-filename = "Multiple-keypair"
+filename = "keypair"
 } 
 #Security group of multiple applications
 resource "aws_security_group" "allow_ssh" {
