@@ -18,6 +18,7 @@ resource "aws_instance" "multiple_applications" {
     user = "ubuntu"
     private_key = file("keypair")    
  }
+}
 #Create the keypair the  of applications
 resource "aws_key_pair" "tf-key-pair" {
 key_name = "keypair"
