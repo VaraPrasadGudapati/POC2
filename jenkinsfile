@@ -10,17 +10,17 @@ agent any
                git branch: 'main', url: 'https://github.com/Mounika420/POC2.git'
         }
         }
-        stage('Terraform init') {
+        stage('terraform init') {
             steps {
                 sh 'terraform init'
             }
         }
-   stage('Terraform plan') {
+   stage('terraform plan') {
             steps {
                 sh 'terraform plan'
             }
         }
-        stage('Terraform apply') {
+        stage('terraform apply') {
             steps {
                 sh 'terraform apply --auto-approve'
             }
