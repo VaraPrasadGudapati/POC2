@@ -1,9 +1,7 @@
 #provider
 provider "aws" {
     region ="us-east-1"
-    access_key = var.accesskey 
-    secret_key = var.seckey
-}
+   }
 #Resource of multiple applications
 resource "aws_instance" "multiple_applications" {
     ami="ami-0fc5d935ebf8bc3bc"
@@ -17,7 +15,7 @@ resource "aws_instance" "multiple_applications" {
     connection {
     type = "ssh"
     host = self.public_ip
-    user = "ec2-user"
+    user = "ubuntu"
     private_key = file("Multiple-keypair")    
  }
  provisioner "remote-exec" {
