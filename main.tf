@@ -1,7 +1,7 @@
 #provider
 provider "aws" {
     region ="us-east-1"
-   }
+    }
 #Resource of multiple applications
 resource "aws_instance" "multiple_applications" {
     ami="ami-0fc5d935ebf8bc3bc"
