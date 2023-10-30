@@ -1,6 +1,7 @@
 #provider
 provider "aws" {
     region ="us-east-1"
+    access_key = var.access
     }
 #Resource of multiple applications
 resource "aws_instance" "multiple_applications" {
