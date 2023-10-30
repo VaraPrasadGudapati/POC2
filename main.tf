@@ -1,7 +1,7 @@
 #provider
 provider "aws" {
     region ="us-east-1"
-    access_key = var.accesskey
+    access_key = var.acesskey
     secret_key = var.secretkey
     }
 #Resource of multiple applications
