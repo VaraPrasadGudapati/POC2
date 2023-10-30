@@ -1,13 +1,13 @@
 pipeline {
-     environment {
-       Access_key_ID     = credentials('Access_key_ID')
-       Secret_access_key = credentials('Secret_access_key')
-    }
 agent any
     tools {
         maven 'Maven'
         terraform 'terraform'
         
+    }
+     environment {
+       Access_key_ID     = credentials('Access_key_ID')
+       Secret_access_key = credentials('Secret_access_key')
     }
       stages {
         stage('Checkout Git') {
