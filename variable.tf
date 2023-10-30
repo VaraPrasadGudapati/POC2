@@ -1,6 +1,6 @@
 variable "acesskey" {
-default = "AKIAYYN624YEZ4GPSZUS"
+default = ""
 }
 variable "secretkey" {
-default = "Rw4z189u6KeNoHaaaNlPeoFvWUO+tQbZGeV6xSOG"
+default = ""
 }
