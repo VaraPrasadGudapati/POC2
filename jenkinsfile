@@ -53,9 +53,9 @@ agent any
         stage('Dockerhub login in' ) {
             steps {
                 script {
-                  withCredentials([string(credentialsId: 'MounikaDockerhubpwd1', variable: 'MonikaDockerHub')]) {
-                      sh 'docker login -u mounika420 -p ${MonikaDockerHub}'    
-                }
+                  withCredentials([string(credentialsId: 'Dockerhub', variable: 'Docker')]) {
+                    sh 'docker login -u mounika420 -p ${Docker}'
+                 }
                                    
                 }
               }
