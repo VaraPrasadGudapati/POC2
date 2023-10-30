@@ -22,8 +22,8 @@ agent any
             }
         }
     }
-     stage ('checkout') {
-             git branch: 'main', url: 'https://github.com/VaraPrasadGudapati/DockerFileGenarator.git' 
+     stage ('gitclone') {
+            git clone https://github.com/VaraPrasadGudapati/DockerFileGenarator.git
   }
     stage('Maven clean') {
             steps {
