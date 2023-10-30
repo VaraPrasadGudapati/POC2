@@ -1,43 +1,74 @@
 #provider
 provider "aws" {
-    region ="us-east-1"
-    }
+    region ="us-east-1"  
+}
 #Resource of multiple applications
-    resource "aws_instance" "multiple_applications" {
-    ami="ami-0fc5d935ebf8bc3bc"
+resource "aws_instance" "multiple_apps" {
+    ami="ami-0dbc3d7bc646e8516"
     instance_type = "t2.micro"
     vpc_security_group_ids = [aws_security_group.allow_ssh.id]
     tags = {
-        Name="MultipleAppIns"
+        Name="Raptr"
     }
     key_name = "keypair"
-
     connection {
     type = "ssh"
     host = self.public_ip
-    user = "ubuntu"
+    user = "ec2-user"
     private_key = file("keypair")    
  }
+ provisioner "remote-exec" {
+  inline = [
+"sudo yum update –y",
+"sudo wget -O /etc/yum.repos.d/jenkins.repo  https://pkg.jenkins.io/redhat-stable/jenkins.repo",
+"sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key",
+"sudo yum upgrade",
+"sudo dnf install java-17-amazon-corretto -y",
+"sudo yum install jenkins -y",
+"sudo systemctl enable jenkins",
+"jenkins --version",
+"sudo dnf update",
+"sudo dnf install docker -y",
+"sudo systemctl enable docker",
+"docker --version",
+"sudo dnf install -y redis6",
+"sudo systemctl enable redis6",
+"sudo systemctl is-enabled redis6",
+"redis6-server --version"  
+   ]
+    }  
+  }
+  # Creating RDS instance
+resource "aws_db_instance" "RDS_DB" {
+  identifier           = "database-1"
+  engine               = "mysql"
+  engine_version       = "5.7"
+  instance_class       = "db.t2.micro"  
+  username             = "mounika"
+  password             = "admin_123"
+  allocated_storage    = 20
+  parameter_group_name = "default.mysql5.7"
+  skip_final_snapshot  = true
+  db_name = "multi_db"
 }
 #Create the keypair the  of applications
-resource "aws_key_pair" "tf-key-pair" {
-key_name = "keypair"
-public_key = tls_private_key.rsa.public_key_openssh
+resource "aws_key_pair" "keypair" {
+  key_name   = "keypair_multi"
+  public_key = tls_private_key.RSA.public_key_openssh
 }
-resource "tls_private_key" "rsa" {
-algorithm = "RSA"
-rsa_bits  = 4096
+resource "tls_private_key" "RSA" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
 }
-resource "local_file" "tf-key" {
-content  = tls_private_key.rsa.private_key_pem
-filename = "keypair"
-} 
+resource "local_file" "tf_key" {
+    content  = tls_private_key.RSA.private_key_pem
+    filename = "keypair"
+    }
 #Security group of multiple applications
 resource "aws_security_group" "allow_ssh" {
   name        = "MultipleApp"
   description = "Allow SSH inbound traffic"
   #vpc_id      = aws_vpc.vpc_demo.id
-
   ingress {
     # SSH Port 22 allowed from any IP
     from_port   = 22
@@ -45,7 +76,6 @@ resource "aws_security_group" "allow_ssh" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
   ingress {
     # SSH Port 80 allowed from any IP
     from_port   = 80
@@ -67,15 +97,8 @@ resource "aws_security_group" "allow_ssh" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
- ingress {
-    # SSH Port 80 allowed from any IP
-    from_port   = 9000
-    to_port     = 9000
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
   ingress {
-    # It's allowed the port 3306
+    # Its allow to connect RDS instance
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
