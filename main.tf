@@ -53,7 +53,7 @@ resource "aws_db_instance" "RDS_DB" {
 }
 #Create the keypair the  of applications
 resource "aws_key_pair" "keypair" {
-  key_name   = "keypair_multi"
+  key_name   = "keypair"
   public_key = tls_private_key.RSA.public_key_openssh
 }
 resource "tls_private_key" "RSA" {
