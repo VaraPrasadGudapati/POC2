@@ -23,7 +23,7 @@ agent any
         }
     }
      stage ('gitclone') {
-            git clone https://github.com/VaraPrasadGudapati/DockerFileGenarator.git
+        script { sh git clone https://github.com/VaraPrasadGudapati/DockerFileGenarator.git}
   }
     stage('Maven clean') {
             steps {
