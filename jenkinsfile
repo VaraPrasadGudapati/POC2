@@ -12,7 +12,7 @@ agent any
       stages {
         stage('Checkout Git') {
             steps {
-               git branch: 'main', url: 'https://github.com/VaraPrasadGudapati/DockerFileGenarator.git'
+               git branch: 'main', url: 'https://github.com/Mounika420/POC2.git'
         }
         }
         stage('terraform init') {
